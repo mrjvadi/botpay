@@ -1,0 +1,44 @@
+# همه‌ی فایل‌های .env حاوی secret هستند — از ۲۰۲۶-۰۷-۱۴ هیچ .env در git ردیابی
+# نمی‌شود؛ فقط .env.example (بدون secret) tracked است. رجوع SECRETS_ROTATION.md.
+**/.env
+!**/.env.example
+
+# env پایه‌ی سرور — secret واقعی، روی هر سرور جدا ساخته می‌شود (رجوع
+# agentmanager/.env کلید BOT_BASE_ENV_FILE).
+
+# خروجی اجرای محلی run.sh
+.logs/
+.run.pids
+
+# botpay consensus — دیتابیس/کلیدِ واقعیِ runtime هر worker، نه سورس. کلیدها
+# مخصوصاً هرگز نباید commit شوند (زنجیره‌ی هش‌شده‌ی مالی را امضا می‌کنند).
+data/consensus/*.db
+data/consensus/*.key
+
+# باینری‌ها و artifact های build
+/e2e-provision
+*.tar
+*.orig
+*.tmp.*
+.gotmp/
+graphify-out
+graphify-out/
+plans/
+prog/*
+test/
+.log/
+
+# فایل‌های ادیتور/IDE
+.idea/
+.vscode/
+.agents/
+.claude/
+
+# Go — کاورج و باینریِ تست
+*.test
+coverage.out
+coverage.txt
+
+# apimanager/web (Vite/TS) — artifact های build؛ node_modules خودش یک
+# .gitignore مجزا در همان پوشه دارد.
+*.tsbuildinfo
