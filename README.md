@@ -1,4 +1,10 @@
-# botpay
+# Payment System
+
+این مخزن شامل دو سرویس مستقل است:
+
+- `botpay/`: کیف پول و هسته پرداخت
+- `revenue-service/`: تجمیع درآمد و تسویه‌های پلتفرم
+
 
 ## این سرویس چیست
 کیف‌پول مرکزی پلتفرم — تنها سرویسی که اجازه دارد موجودی TON کاربران را تغییر دهد. همه‌ی سرویس‌های دیگر (`botmanager`, `ads-bot`) به‌جای دسترسی مستقیم به DB کیف‌پول، فقط از طریق NATS request/reply با آن حرف می‌زنند.
@@ -13,7 +19,7 @@
 - ربات تلگرام خودش برای نمایش موجودی/تاریخچه به کاربر نهایی.
 
 ## ارتباطات
-- NATS request/reply: `pay.balance`, `pay.authorize`, `pay.deduct`, `pay.credit`, `pay.transfer`, `pay.invoice.create`, `pay.invoice.status` (تعریف در `shared/protocol/subjects.go`).
+- NATS request/reply: `pay.balance`, `pay.authorize`, `pay.deduct`, `pay.credit`, `pay.transfer`, `pay.invoice.create`, `pay.invoice.status` (تعریف در `botpay/shared/protocol/subjects.go`).
 - رویداد `wallet.updated` برای باطل‌کردن کش Redis در سایر سرویس‌ها.
 - Redis: کش موجودی (فقط botpay اجازه‌ی نوشتن دارد).
 - PostgreSQL: مدل‌های `Wallet`, `Transaction`, `Invoice`, `WithdrawRequest`.
@@ -29,11 +35,12 @@
 ## اجرای مستقل
 
 ```bash
+cd botpay
 cp .env.example .env
 go run ./cmd
 ```
 
-این repository مستقل است و به checkout پروژه CreatorBotV3 نیاز ندارد. بسته‌های زیر `shared/` فقط قراردادها و adapterهای موردنیاز خود BotPay هستند.
+این repository مستقل است و به checkout پروژه CreatorBotV3 نیاز ندارد. بسته‌های زیر `botpay/shared/` فقط قراردادها و adapterهای موردنیاز خود BotPay هستند.
 
 
 ## Revenue service
@@ -41,7 +48,7 @@ go run ./cmd
 سرویس تجمیع درآمد و تسویه‌های پلتفرم در مسیر `revenue-service/` نگهداری می‌شود و به‌صورت یک Go module مستقل در کنار BotPay قابل اجرا و استقرار است:
 
 ```bash
-go test ./...
-(cd revenue-service && go test ./...)
+go test ./botpay/... ./revenue-service/...
+docker build -f botpay/Dockerfile -t botpay .
 docker build -f revenue-service/Dockerfile -t revenue-service .
 ```

@@ -1,6 +1,6 @@
 FROM golang:1.25-alpine AS builder
-WORKDIR /app
-COPY . .
+WORKDIR /app/botpay
+COPY botpay/ .
 RUN go build -o /bin/service ./cmd/...
 
 FROM alpine:3.19
