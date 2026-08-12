@@ -34,3 +34,14 @@ go run ./cmd
 ```
 
 این repository مستقل است و به checkout پروژه CreatorBotV3 نیاز ندارد. بسته‌های زیر `shared/` فقط قراردادها و adapterهای موردنیاز خود BotPay هستند.
+
+
+## Revenue service
+
+سرویس تجمیع درآمد و تسویه‌های پلتفرم در مسیر `revenue-service/` نگهداری می‌شود و به‌صورت یک Go module مستقل در کنار BotPay قابل اجرا و استقرار است:
+
+```bash
+go test ./...
+(cd revenue-service && go test ./...)
+docker build -f revenue-service/Dockerfile -t revenue-service .
+```
